@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id                String   @id @default(uuid())
+  name              String
+  sku               String?  @unique
+  price             Decimal  @db.Decimal(10, 2)
+  inventoryCount    Int      @default(0)
+  lowStockThreshold Int      @default(5)
+  imageUrl          String?
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  leads Lead[]
+
+  @@map("products")
+}
+
+model Lead {
+  id           String     @id @default(uuid())
+  productId    String
+  customerName String
+  phone        String
+  email        String?
+  state        String?
+  city         String?
+  quantity     Int        @default(1)
+  status       LeadStatus @default(FRESH)
+  sourceUrl    String?
+  notes        String?
+  whatsappSent Boolean    @default(false)
+  triggerRunId String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  product      Product       @relation(fields: [productId], references: [id])
+  events       LeadEvent[]
+  whatsappLogs WhatsappLog[]
+
+  @@map("leads")
+}
+
+model LeadEvent {
+  id        String   @id @default(uuid())
+  leadId    String
+  oldStatus String?
+  newStatus String?
+  note      String?
+  changedAt DateTime @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("lead_events")
+}
+
+model WhatsappLog {
+  id        String   @id @default(uuid())
+  leadId    String
+  direction String
+  recipient String
+  message   String
+  status    String   @default("sent")
+  sentAt    DateTime @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("whatsapp_logs")
+}
+
+enum LeadStatus {
+  FRESH
+  CONTACTED
+  CONVERTED
+  LOST
+}

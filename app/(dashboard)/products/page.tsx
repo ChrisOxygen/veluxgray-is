@@ -1,3 +1,10 @@
+import { Suspense } from "react";
+import { ProductsView } from "@/features/products/components/ProductsView";
+
 export default function ProductsPage() {
-  return <div>Products</div>;
+  return (
+    <Suspense>
+      <ProductsView />
+    </Suspense>
+  );
 }
