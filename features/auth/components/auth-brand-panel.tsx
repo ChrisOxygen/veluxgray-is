@@ -14,7 +14,7 @@ export function AuthBrandPanel() {
           alt="Velux Gray"
           width={160}
           height={48}
-          className="object-contain"
+          className="object-contain w-30"
           priority
         />
       </div>
@@ -26,7 +26,8 @@ export function AuthBrandPanel() {
           Luxury refined. Operations perfected.
         </h2>
         <p className="mt-5 text-[13.5px] text-primary-foreground/45 max-w-[20rem] leading-[1.65]">
-          Your internal hub for inventory, leads, and customer workflows — built for Velux Gray.
+          Your internal hub for inventory, leads, and customer workflows — built
+          for Velux Gray.
         </p>
 
         <div className="mt-12 flex flex-col gap-3">
@@ -37,7 +38,9 @@ export function AuthBrandPanel() {
           ].map((item) => (
             <div key={item} className="flex items-center gap-3">
               <div className="size-1.5 rounded-full bg-accent shrink-0" />
-              <span className="text-[13px] text-primary-foreground/55">{item}</span>
+              <span className="text-[13px] text-primary-foreground/55">
+                {item}
+              </span>
             </div>
           ))}
         </div>
