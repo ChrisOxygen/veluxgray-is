@@ -38,7 +38,6 @@ export function useSignIn() {
     }
 
     router.push("/");
-    router.refresh();
     setIsPending(false);
   });
 

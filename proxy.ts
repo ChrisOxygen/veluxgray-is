@@ -16,8 +16,6 @@ export async function proxy(request: NextRequest) {
     (path) => pathname === path || pathname.startsWith(path + "/")
   );
 
-  if (isPublic) return NextResponse.next();
-
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -44,6 +42,14 @@ export async function proxy(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Logged-in owner trying to visit an auth page → send to dashboard
+  if (isPublic) {
+    if (user && user.app_metadata?.role === "owner") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    return response;
+  }
 
   if (!user || user.app_metadata?.role !== "owner") {
     return NextResponse.redirect(new URL("/sign-in", request.url));
