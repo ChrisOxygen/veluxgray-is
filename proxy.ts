@@ -1,6 +1,13 @@
+import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_PATHS = ["/sign-in", "/sign-up", "/forgot-password"];
+const PUBLIC_PATHS = [
+  "/sign-in",
+  "/sign-up",
+  "/forgot-password",
+  "/reset-password",
+  "/auth/callback",
+];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -9,18 +16,40 @@ export async function proxy(request: NextRequest) {
     (path) => pathname === path || pathname.startsWith(path + "/")
   );
 
-  if (isPublic) {
-    return NextResponse.next();
+  if (isPublic) return NextResponse.next();
+
+  let response = NextResponse.next({ request });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user || user.app_metadata?.role !== "owner") {
+    return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  // TODO: replace stub with Supabase session check once env vars are configured
-  // const supabase = createServerClient(...);
-  // const { data: { user } } = await supabase.auth.getUser();
-  // if (!user) {
-  //   return NextResponse.redirect(new URL("/sign-in", request.url));
-  // }
-
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
