@@ -8,7 +8,7 @@ export type OnNewLeadPayload = ZLeadWebhookPayload & { productId: string };
 export const onNewLead = task({
   id: "on-new-lead",
   run: async (payload: OnNewLeadPayload, { ctx }) => {
-    // Step 1 — Fetch product for name used in messages
+    // Step 1 — Fetch product
     const product = await prisma.product.findUnique({
       where: { id: payload.productId },
       select: { id: true, name: true },
@@ -45,8 +45,11 @@ export const onNewLead = task({
     const isOnWhatsApp = await checkWhatsAppNumber(lead.phone);
 
     if (isOnWhatsApp) {
-      // Step 4A — First message to customer
-      const msg1 = `Hi ${customerName} 👋, thanks for your interest in the *${product.name}*!\n\nWe've received your order and will be in touch shortly. — Velux Gray`;
+      // Step 4 — First message to customer
+      const msg1 =
+        `Hello ${customerName}. I just got your order for the *${product.name}*. ` +
+        `My name is Chris, and I am a sales rep at Velux Gray Boutique. ` +
+        `Let me confirm if the product is still available, I'd get back to you shortly 😊.`;
 
       try {
         await wasender.sendText({ to: toE164(lead.phone), text: msg1 });
@@ -63,10 +66,13 @@ export const onNewLead = task({
         logger.error("Failed to send first customer message", { err });
       }
 
-      // Step 5A — Wait 30 minutes, then send follow-up
-      await wait.for({ minutes: 30 });
+      // Step 5 — Wait 3 minutes, then send follow-up
+      await wait.for({ minutes: 3 });
 
-      const msg2 = `Just checking in! 😊 Are you still interested in the *${product.name}*? Reply YES and we'll process your order right away. — Velux Gray`;
+      const msg2 =
+        `Okay, I just confirmed. We have four remaining. ` +
+        `It's been our fastest selling item since yesterday. ` +
+        `Should I send you some pictures of the *${product.name}*?`;
 
       try {
         await wasender.sendText({ to: toE164(lead.phone), text: msg2 });
@@ -86,35 +92,34 @@ export const onNewLead = task({
       } catch (err) {
         logger.error("Failed to send follow-up customer message", { err });
       }
-    } else {
-      // Step 4B — Customer not on WhatsApp: alert owner
-      const noWaAlert = `🔴 *New Lead — No WhatsApp*\n\n*Name:* ${customerName}\n*Phone:* ${lead.phone}\n*Product:* ${product.name}\n*State:* ${lead.state ?? "N/A"}\n\nThis number is not on WhatsApp. You may need to call them directly.`;
-
-      try {
-        await wasender.sendText({
-          to: toE164(process.env.WASENDERAPI_OWNER_PHONE!),
-          text: noWaAlert,
-        });
-        await prisma.whatsappLog.create({
-          data: {
-            leadId: lead.id,
-            direction: "outbound",
-            recipient: process.env.WASENDERAPI_OWNER_PHONE!,
-            message: noWaAlert,
-            status: "sent",
-          },
-        });
-      } catch (err) {
-        logger.error("Failed to send no-WhatsApp owner alert", { err });
-      }
     }
 
-    // Step 6 — Owner alert (always runs)
-    const ownerAlert = `✅ *New Lead*\n\n*Name:* ${customerName}\n*Phone:* ${lead.phone}\n*Product:* ${product.name}\n*State:* ${lead.state ?? "N/A"}\n*WhatsApp:* ${isOnWhatsApp ? "Yes" : "No"}`;
+    // Step 6 — Wait 1 minute, then notify owner (always fires)
+    await wait.for({ minutes: 1 });
+
+    const qty = lead.quantity;
+    const statusLine = isOnWhatsApp
+      ? `✅ *Contacted — welcome message + follow-up sent*`
+      : `🔴 *Not on WhatsApp — call directly*`;
+
+    const ownerAlert =
+      `🛎️ *New Lead — Velux Gray*\n\n` +
+      `${statusLine}\n\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `*Product:* ${product.name}\n` +
+      `*Quantity:* ${qty}\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `*Name:* ${customerName}\n` +
+      `*Phone:* ${lead.phone}\n` +
+      (payload.altPhone ? `*Alt Phone:* ${payload.altPhone}\n` : "") +
+      (lead.email ? `*Email:* ${lead.email}\n` : "") +
+      (lead.state ? `*State:* ${lead.state}\n` : "") +
+      (lead.deliveryAddress ? `*Delivery Address:* ${lead.deliveryAddress}\n` : "") +
+      `━━━━━━━━━━━━━━━━━━`;
 
     try {
       await wasender.sendText({
-        to: process.env.WASENDERAPI_OWNER_PHONE!,
+        to: toE164(process.env.WASENDERAPI_OWNER_PHONE!),
         text: ownerAlert,
       });
       await prisma.whatsappLog.create({
@@ -130,9 +135,6 @@ export const onNewLead = task({
       logger.error("Failed to send owner alert", { err });
     }
 
-    logger.info("on-new-lead complete", {
-      leadId: lead.id,
-      isOnWhatsApp,
-    });
+    logger.info("on-new-lead complete", { leadId: lead.id, isOnWhatsApp });
   },
 });
