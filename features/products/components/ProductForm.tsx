@@ -9,6 +9,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { cn } from "@/shared/lib/utils";
 import type { Product } from "@/features/products/types";
+import { ImageUpload } from "@/features/products/components/ImageUpload";
 
 interface ProductFormProps {
   product?: Product | null;
@@ -34,6 +35,8 @@ export function ProductForm({
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<ZCreateProduct>({
     resolver: zodResolver(ZCreateProductSchema) as Resolver<ZCreateProduct>,
@@ -151,19 +154,14 @@ export function ProductForm({
         </div>
       </div>
 
-      {/* Image URL */}
+      {/* Product Image */}
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="imageUrl" className="text-[12.5px] font-medium text-foreground">
-          Image URL
-        </Label>
-        <Input
-          id="imageUrl"
-          type="url"
-          placeholder="https://…"
-          className={cn("h-9 text-[13px]", errors.imageUrl && "border-destructive")}
-          {...register("imageUrl")}
+        <Label className="text-[12.5px] font-medium text-foreground">Product Image</Label>
+        <ImageUpload
+          value={watch("imageUrl") ?? null}
+          onChange={(url) => setValue("imageUrl", url ?? undefined, { shouldValidate: true })}
+          error={errors.imageUrl?.message}
         />
-        <FieldError message={errors.imageUrl?.message} />
       </div>
 
       {/* Footer */}
