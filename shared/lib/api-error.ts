@@ -9,11 +9,19 @@ type ErrorCode =
   | "insufficient_stock"
   | "internal_error";
 
-export function apiError(code: ErrorCode, message: string, status: number) {
-  return NextResponse.json({ error: { code, message } }, { status });
+export function apiError(
+  code: ErrorCode,
+  message: string,
+  status: number,
+  headers?: Record<string, string>,
+) {
+  return NextResponse.json({ error: { code, message } }, { status, headers });
 }
 
-export function apiValidationError(err: ZodError) {
+export function apiValidationError(
+  err: ZodError,
+  headers?: Record<string, string>,
+) {
   return NextResponse.json(
     {
       error: {
@@ -22,6 +30,6 @@ export function apiValidationError(err: ZodError) {
         details: err.flatten(),
       },
     },
-    { status: 422 },
+    { status: 422, headers },
   );
 }

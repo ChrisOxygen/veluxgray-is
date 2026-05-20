@@ -30,8 +30,9 @@ model Lead {
   customerName String
   phone        String
   email        String?
-  state        String?
-  city         String?
+  state           String?
+  city            String?
+  deliveryAddress String?
   quantity     Int        @default(1)
   status       LeadStatus @default(FRESH)
   sourceUrl    String?

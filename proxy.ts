@@ -7,9 +7,15 @@ const PUBLIC_PATHS = [
   "/forgot-password",
   "/reset-password",
   "/auth/callback",
+  "/api/webhooks",
 ];
 
 export async function proxy(request: NextRequest) {
+  // Let CORS preflights pass through immediately — the route handler owns the response
+  if (request.method === "OPTIONS") {
+    return NextResponse.next();
+  }
+
   const { pathname } = request.nextUrl;
 
   const isPublic = PUBLIC_PATHS.some(

@@ -31,6 +31,7 @@ export const onNewLead = task({
         phone: payload.mainPhone,
         email: payload.email || null,
         state: payload.state ?? null,
+        deliveryAddress: payload.deliveryAddress ?? null,
         quantity: payload.quantity ? parseInt(payload.quantity, 10) : 1,
         sourceUrl: null,
         status: "FRESH",

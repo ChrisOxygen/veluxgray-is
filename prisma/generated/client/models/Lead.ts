@@ -42,6 +42,7 @@ export type LeadMinAggregateOutputType = {
   email: string | null
   state: string | null
   city: string | null
+  deliveryAddress: string | null
   quantity: number | null
   status: $Enums.LeadStatus | null
   sourceUrl: string | null
@@ -60,6 +61,7 @@ export type LeadMaxAggregateOutputType = {
   email: string | null
   state: string | null
   city: string | null
+  deliveryAddress: string | null
   quantity: number | null
   status: $Enums.LeadStatus | null
   sourceUrl: string | null
@@ -78,6 +80,7 @@ export type LeadCountAggregateOutputType = {
   email: number
   state: number
   city: number
+  deliveryAddress: number
   quantity: number
   status: number
   sourceUrl: number
@@ -106,6 +109,7 @@ export type LeadMinAggregateInputType = {
   email?: true
   state?: true
   city?: true
+  deliveryAddress?: true
   quantity?: true
   status?: true
   sourceUrl?: true
@@ -124,6 +128,7 @@ export type LeadMaxAggregateInputType = {
   email?: true
   state?: true
   city?: true
+  deliveryAddress?: true
   quantity?: true
   status?: true
   sourceUrl?: true
@@ -142,6 +147,7 @@ export type LeadCountAggregateInputType = {
   email?: true
   state?: true
   city?: true
+  deliveryAddress?: true
   quantity?: true
   status?: true
   sourceUrl?: true
@@ -247,6 +253,7 @@ export type LeadGroupByOutputType = {
   email: string | null
   state: string | null
   city: string | null
+  deliveryAddress: string | null
   quantity: number
   status: $Enums.LeadStatus
   sourceUrl: string | null
@@ -288,6 +295,7 @@ export type LeadWhereInput = {
   email?: Prisma.StringNullableFilter<"Lead"> | string | null
   state?: Prisma.StringNullableFilter<"Lead"> | string | null
   city?: Prisma.StringNullableFilter<"Lead"> | string | null
+  deliveryAddress?: Prisma.StringNullableFilter<"Lead"> | string | null
   quantity?: Prisma.IntFilter<"Lead"> | number
   status?: Prisma.EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
   sourceUrl?: Prisma.StringNullableFilter<"Lead"> | string | null
@@ -309,6 +317,7 @@ export type LeadOrderByWithRelationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveryAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -333,6 +342,7 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.StringNullableFilter<"Lead"> | string | null
   state?: Prisma.StringNullableFilter<"Lead"> | string | null
   city?: Prisma.StringNullableFilter<"Lead"> | string | null
+  deliveryAddress?: Prisma.StringNullableFilter<"Lead"> | string | null
   quantity?: Prisma.IntFilter<"Lead"> | number
   status?: Prisma.EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
   sourceUrl?: Prisma.StringNullableFilter<"Lead"> | string | null
@@ -354,6 +364,7 @@ export type LeadOrderByWithAggregationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveryAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -380,6 +391,7 @@ export type LeadScalarWhereWithAggregatesInput = {
   email?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   state?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   city?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
+  deliveryAddress?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   quantity?: Prisma.IntWithAggregatesFilter<"Lead"> | number
   status?: Prisma.EnumLeadStatusWithAggregatesFilter<"Lead"> | $Enums.LeadStatus
   sourceUrl?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
@@ -397,6 +409,7 @@ export type LeadCreateInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -418,6 +431,7 @@ export type LeadUncheckedCreateInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -437,6 +451,7 @@ export type LeadUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -458,6 +473,7 @@ export type LeadUncheckedUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -478,6 +494,7 @@ export type LeadCreateManyInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -495,6 +512,7 @@ export type LeadUpdateManyMutationInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -513,6 +531,7 @@ export type LeadUncheckedUpdateManyInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -541,6 +560,7 @@ export type LeadCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   state?: Prisma.SortOrder
   city?: Prisma.SortOrder
+  deliveryAddress?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
@@ -563,6 +583,7 @@ export type LeadMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   state?: Prisma.SortOrder
   city?: Prisma.SortOrder
+  deliveryAddress?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
@@ -581,6 +602,7 @@ export type LeadMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   state?: Prisma.SortOrder
   city?: Prisma.SortOrder
+  deliveryAddress?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
@@ -681,6 +703,7 @@ export type LeadCreateWithoutProductInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -700,6 +723,7 @@ export type LeadUncheckedCreateWithoutProductInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -749,6 +773,7 @@ export type LeadScalarWhereInput = {
   email?: Prisma.StringNullableFilter<"Lead"> | string | null
   state?: Prisma.StringNullableFilter<"Lead"> | string | null
   city?: Prisma.StringNullableFilter<"Lead"> | string | null
+  deliveryAddress?: Prisma.StringNullableFilter<"Lead"> | string | null
   quantity?: Prisma.IntFilter<"Lead"> | number
   status?: Prisma.EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
   sourceUrl?: Prisma.StringNullableFilter<"Lead"> | string | null
@@ -766,6 +791,7 @@ export type LeadCreateWithoutEventsInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -786,6 +812,7 @@ export type LeadUncheckedCreateWithoutEventsInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -820,6 +847,7 @@ export type LeadUpdateWithoutEventsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -840,6 +868,7 @@ export type LeadUncheckedUpdateWithoutEventsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -858,6 +887,7 @@ export type LeadCreateWithoutWhatsappLogsInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -878,6 +908,7 @@ export type LeadUncheckedCreateWithoutWhatsappLogsInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -912,6 +943,7 @@ export type LeadUpdateWithoutWhatsappLogsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -932,6 +964,7 @@ export type LeadUncheckedUpdateWithoutWhatsappLogsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -950,6 +983,7 @@ export type LeadCreateManyProductInput = {
   email?: string | null
   state?: string | null
   city?: string | null
+  deliveryAddress?: string | null
   quantity?: number
   status?: $Enums.LeadStatus
   sourceUrl?: string | null
@@ -967,6 +1001,7 @@ export type LeadUpdateWithoutProductInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -986,6 +1021,7 @@ export type LeadUncheckedUpdateWithoutProductInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1005,6 +1041,7 @@ export type LeadUncheckedUpdateManyWithoutProductInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1063,6 +1100,7 @@ export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   state?: boolean
   city?: boolean
+  deliveryAddress?: boolean
   quantity?: boolean
   status?: boolean
   sourceUrl?: boolean
@@ -1085,6 +1123,7 @@ export type LeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   state?: boolean
   city?: boolean
+  deliveryAddress?: boolean
   quantity?: boolean
   status?: boolean
   sourceUrl?: boolean
@@ -1104,6 +1143,7 @@ export type LeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   state?: boolean
   city?: boolean
+  deliveryAddress?: boolean
   quantity?: boolean
   status?: boolean
   sourceUrl?: boolean
@@ -1123,6 +1163,7 @@ export type LeadSelectScalar = {
   email?: boolean
   state?: boolean
   city?: boolean
+  deliveryAddress?: boolean
   quantity?: boolean
   status?: boolean
   sourceUrl?: boolean
@@ -1133,7 +1174,7 @@ export type LeadSelectScalar = {
   updatedAt?: boolean
 }
 
-export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productId" | "customerName" | "phone" | "email" | "state" | "city" | "quantity" | "status" | "sourceUrl" | "notes" | "whatsappSent" | "triggerRunId" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productId" | "customerName" | "phone" | "email" | "state" | "city" | "deliveryAddress" | "quantity" | "status" | "sourceUrl" | "notes" | "whatsappSent" | "triggerRunId" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
 export type LeadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   events?: boolean | Prisma.Lead$eventsArgs<ExtArgs>
@@ -1162,6 +1203,7 @@ export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: string | null
     state: string | null
     city: string | null
+    deliveryAddress: string | null
     quantity: number
     status: $Enums.LeadStatus
     sourceUrl: string | null
@@ -1603,6 +1645,7 @@ export interface LeadFieldRefs {
   readonly email: Prisma.FieldRef<"Lead", 'String'>
   readonly state: Prisma.FieldRef<"Lead", 'String'>
   readonly city: Prisma.FieldRef<"Lead", 'String'>
+  readonly deliveryAddress: Prisma.FieldRef<"Lead", 'String'>
   readonly quantity: Prisma.FieldRef<"Lead", 'Int'>
   readonly status: Prisma.FieldRef<"Lead", 'LeadStatus'>
   readonly sourceUrl: Prisma.FieldRef<"Lead", 'String'>

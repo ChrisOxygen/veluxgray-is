@@ -97,6 +97,7 @@ export const LeadScalarFieldEnum = {
   email: 'email',
   state: 'state',
   city: 'city',
+  deliveryAddress: 'deliveryAddress',
   quantity: 'quantity',
   status: 'status',
   sourceUrl: 'sourceUrl',
