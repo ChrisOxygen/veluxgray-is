@@ -104,7 +104,7 @@ export function KpiCards({
         valueColor="text-accent"
       />
       <KpiCard
-        label="Dispatch Revenue"
+        label="Dispatch Cost"
         value={formatNaira(stats.totalSalesRevenue)}
         icon={Banknote}
         iconBg="bg-muted"

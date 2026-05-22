@@ -90,7 +90,7 @@ export function SalesView() {
               <p className="text-[22px] sm:text-[26px] font-bold tracking-tight leading-none text-foreground font-heading">
                 {formatNaira(data?.totalRevenue ?? 0)}
               </p>
-              <p className="text-[11px] sm:text-[12px] mt-1.5 text-muted-foreground">Dispatch Revenue</p>
+              <p className="text-[11px] sm:text-[12px] mt-1.5 text-muted-foreground">Dispatch Cost</p>
             </div>
           </div>
         </div>
