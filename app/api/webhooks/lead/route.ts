@@ -8,26 +8,47 @@ import {
 import { apiError, apiValidationError } from "@/shared/lib/api-error";
 import type { OnNewLeadPayload } from "@/trigger/on-new-lead";
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_LANDING_URL ?? "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+const PRODUCTION_DOMAIN = "veluxgrayfashion.store";
 
-export function OPTIONS() {
-  return new Response(null, { status: 204, headers: CORS_HEADERS });
+function getAllowedOrigin(request: Request): string {
+  const origin = request.headers.get("origin") ?? "";
+  if (
+    origin === `https://${PRODUCTION_DOMAIN}` ||
+    origin.endsWith(`.${PRODUCTION_DOMAIN}`)
+  ) {
+    return origin;
+  }
+  const dev = process.env.NEXT_PUBLIC_LANDING_URL;
+  if (dev && origin === dev) return origin;
+  return "";
+}
+
+function corsHeaders(request: Request): Record<string, string> {
+  const allowedOrigin = getAllowedOrigin(request);
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin",
+  };
+}
+
+export function OPTIONS(request: Request) {
+  return new Response(null, { status: 204, headers: corsHeaders(request) });
 }
 
 export async function POST(request: Request) {
+  const headers = corsHeaders(request);
+
   // 1. Validate
   const body = await request.json();
   const parsed = ZLeadWebhookPayload.safeParse(body);
-  if (!parsed.success) return apiValidationError(parsed.error, CORS_HEADERS);
+  if (!parsed.success) return apiValidationError(parsed.error, headers);
 
   // 2. Verify product exists and is active
   const product = await _getProductBySku(parsed.data.sku);
   if (!product) {
-    return apiError("not_found", "Product not found or no longer available", 404, CORS_HEADERS);
+    return apiError("not_found", "Product not found or no longer available", 404, headers);
   }
 
   // 3. Duplicate check — same phone + product within 24 hours
@@ -40,7 +61,7 @@ export async function POST(request: Request) {
       "bad_request",
       "A lead for this phone number and product already exists",
       400,
-      CORS_HEADERS,
+      headers,
     );
   }
 
@@ -55,6 +76,6 @@ export async function POST(request: Request) {
 
   return NextResponse.json(
     { message: "Lead received successfully." },
-    { status: 202, headers: CORS_HEADERS },
+    { status: 202, headers },
   );
 }
