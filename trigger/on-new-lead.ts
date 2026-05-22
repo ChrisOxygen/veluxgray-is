@@ -1,6 +1,6 @@
 import { task, wait, logger } from "@trigger.dev/sdk";
 import { prisma } from "@/shared/lib/prisma";
-import { wasender, checkWhatsAppNumber, toE164 } from "@/shared/lib/wasender";
+import { getWasender, checkWhatsAppNumber, toE164 } from "@/shared/lib/wasender";
 import type { ZLeadWebhookPayload } from "@/features/leads/schemas";
 
 export type OnNewLeadPayload = ZLeadWebhookPayload & { productId: string };
@@ -52,7 +52,7 @@ export const onNewLead = task({
         `Let me confirm if the product is still available, I'd get back to you shortly 😊.`;
 
       try {
-        await wasender.sendText({ to: toE164(lead.phone), text: msg1 });
+        await getWasender().sendText({ to: toE164(lead.phone), text: msg1 });
         await prisma.whatsappLog.create({
           data: {
             leadId: lead.id,
@@ -75,7 +75,7 @@ export const onNewLead = task({
         `Should I send you some pictures of the *${product.name}*?`;
 
       try {
-        await wasender.sendText({ to: toE164(lead.phone), text: msg2 });
+        await getWasender().sendText({ to: toE164(lead.phone), text: msg2 });
         await prisma.whatsappLog.create({
           data: {
             leadId: lead.id,
@@ -118,7 +118,7 @@ export const onNewLead = task({
       `━━━━━━━━━━━━━━━━━━`;
 
     try {
-      await wasender.sendText({
+      await getWasender().sendText({
         to: toE164(process.env.WASENDERAPI_OWNER_PHONE!),
         text: ownerAlert,
       });

@@ -1,6 +1,13 @@
 import { createWasender } from "wasenderapi";
 
-export const wasender = createWasender(process.env.WASENDERAPI_TOKEN!);
+let _wasender: ReturnType<typeof createWasender> | null = null;
+
+export function getWasender() {
+  if (!_wasender) {
+    _wasender = createWasender(process.env.WASENDERAPI_TOKEN!);
+  }
+  return _wasender;
+}
 
 // WasenderAPI requires E.164 format (+2348012345678).
 // Our DB stores phones without the + (2348012345678), so we add it here.
