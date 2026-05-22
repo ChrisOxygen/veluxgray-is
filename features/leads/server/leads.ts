@@ -30,7 +30,7 @@ export async function _getLeads({ status, productId, q }: GetLeadsParams = {}) {
     where,
     orderBy: { createdAt: "desc" },
     include: {
-      product: { select: { id: true, name: true, sku: true, price: true } },
+      product: { select: { id: true, name: true, sku: true, costPrice: true, sellingPrice: true } },
       sale: true,
     },
   });

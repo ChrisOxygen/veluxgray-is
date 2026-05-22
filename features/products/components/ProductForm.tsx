@@ -7,6 +7,7 @@ import { ZCreateProductSchema, type ZCreateProduct } from "@/features/products/s
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { cn } from "@/shared/lib/utils";
 import type { Product } from "@/features/products/types";
 import { ImageUpload } from "@/features/products/components/ImageUpload";
@@ -44,7 +45,9 @@ export function ProductForm({
       ? {
           name: product.name,
           sku: product.sku ?? undefined,
-          price: parseFloat(product.price),
+          costPrice: parseFloat(product.costPrice),
+          sellingPrice: parseFloat(product.sellingPrice),
+          description: product.description ?? undefined,
           inventoryCount: product.inventoryCount,
           lowStockThreshold: product.lowStockThreshold,
           imageUrl: product.imageUrl ?? undefined,
@@ -60,7 +63,9 @@ export function ProductForm({
       reset({
         name: product.name,
         sku: product.sku ?? undefined,
-        price: parseFloat(product.price),
+        costPrice: parseFloat(product.costPrice),
+        sellingPrice: parseFloat(product.sellingPrice),
+        description: product.description ?? undefined,
         inventoryCount: product.inventoryCount,
         lowStockThreshold: product.lowStockThreshold,
         imageUrl: product.imageUrl ?? undefined,
@@ -86,36 +91,68 @@ export function ProductForm({
         <FieldError message={errors.name?.message} />
       </div>
 
-      {/* SKU + Price row */}
+      {/* SKU */}
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="sku" className="text-[12.5px] font-medium text-foreground">
+          SKU
+        </Label>
+        <Input
+          id="sku"
+          placeholder="e.g. VG-001"
+          className="h-9 text-[13px] font-mono"
+          {...register("sku")}
+        />
+        <FieldError message={errors.sku?.message} />
+      </div>
+
+      {/* Cost Price + Selling Price row */}
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="sku" className="text-[12.5px] font-medium text-foreground">
-            SKU
+          <Label htmlFor="costPrice" className="text-[12.5px] font-medium text-foreground">
+            Cost Price (₦) <span className="text-destructive">*</span>
           </Label>
           <Input
-            id="sku"
-            placeholder="e.g. VG-001"
-            className="h-9 text-[13px] font-mono"
-            {...register("sku")}
-          />
-          <FieldError message={errors.sku?.message} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="price" className="text-[12.5px] font-medium text-foreground">
-            Price (₦) <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="price"
+            id="costPrice"
             type="number"
             step="0.01"
             min="0"
             placeholder="0.00"
-            className={cn("h-9 text-[13px]", errors.price && "border-destructive")}
-            {...register("price")}
+            className={cn("h-9 text-[13px]", errors.costPrice && "border-destructive")}
+            {...register("costPrice")}
           />
-          <FieldError message={errors.price?.message} />
+          <FieldError message={errors.costPrice?.message} />
         </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="sellingPrice" className="text-[12.5px] font-medium text-foreground">
+            Selling Price (₦) <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="sellingPrice"
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="0.00"
+            className={cn("h-9 text-[13px]", errors.sellingPrice && "border-destructive")}
+            {...register("sellingPrice")}
+          />
+          <FieldError message={errors.sellingPrice?.message} />
+        </div>
+      </div>
+
+      {/* Description */}
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="description" className="text-[12.5px] font-medium text-foreground">
+          Description
+        </Label>
+        <Textarea
+          id="description"
+          rows={3}
+          placeholder="Brief description of the product…"
+          className={cn("text-[13px] resize-none", errors.description && "border-destructive")}
+          {...register("description")}
+        />
+        <FieldError message={errors.description?.message} />
       </div>
 
       {/* Inventory + Threshold row */}

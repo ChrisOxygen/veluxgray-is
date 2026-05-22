@@ -29,7 +29,7 @@ export async function _getSales({ productId, from, to }: GetSalesParams = {}) {
           state: true,
           quantity: true,
           createdAt: true,
-          product: { select: { id: true, name: true, sku: true, price: true } },
+          product: { select: { id: true, name: true, sku: true, costPrice: true, sellingPrice: true } },
         },
       },
     },

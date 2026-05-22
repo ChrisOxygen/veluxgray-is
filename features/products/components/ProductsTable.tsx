@@ -9,7 +9,7 @@ import type { Product } from "@/features/products/types";
 const TABLE_COLUMNS = [
   { label: "Product", width: "35%" },
   { label: "SKU", width: "14%" },
-  { label: "Price", width: "14%" },
+  { label: "Selling Price", width: "14%" },
   { label: "Inventory", width: "14%" },
   { label: "Status", width: "13%" },
   { label: "", width: "10%" },
@@ -133,10 +133,10 @@ export function ProductsTable({
                     )}
                   </td>
 
-                  {/* Price */}
+                  {/* Selling Price */}
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span className="text-[13px] font-semibold text-foreground">
-                      {formatPrice(product.price)}
+                      {formatPrice(product.sellingPrice)}
                     </span>
                   </td>
 

@@ -11,7 +11,9 @@ model Product {
   id                String   @id @default(uuid())
   name              String
   sku               String?  @unique
-  price             Decimal  @db.Decimal(10, 2)
+  costPrice         Decimal  @db.Decimal(10, 2)
+  sellingPrice      Decimal  @db.Decimal(10, 2)
+  description       String?
   inventoryCount    Int      @default(0)
   lowStockThreshold Int      @default(5)
   imageUrl          String?

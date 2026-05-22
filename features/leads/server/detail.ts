@@ -5,7 +5,7 @@ export async function _getLeadById(id: string) {
   return prisma.lead.findUnique({
     where: { id },
     include: {
-      product: { select: { id: true, name: true, sku: true, price: true } },
+      product: { select: { id: true, name: true, sku: true, costPrice: true, sellingPrice: true } },
       sale: true,
       events: { orderBy: { changedAt: "desc" } },
       whatsappLogs: { orderBy: { sentAt: "desc" } },
