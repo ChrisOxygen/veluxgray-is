@@ -10,6 +10,7 @@
  */
 export type * from './models/Product'
 export type * from './models/Lead'
+export type * from './models/Sale'
 export type * from './models/LeadEvent'
 export type * from './models/WhatsappLog'
 export type * from './commonInputTypes'

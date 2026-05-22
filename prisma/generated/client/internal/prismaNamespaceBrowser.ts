@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Product: 'Product',
   Lead: 'Lead',
+  Sale: 'Sale',
   LeadEvent: 'LeadEvent',
   WhatsappLog: 'WhatsappLog'
 } as const
@@ -109,6 +110,17 @@ export const LeadScalarFieldEnum = {
 } as const
 
 export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+export const SaleScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  dispatchFee: 'dispatchFee',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SaleScalarFieldEnum = (typeof SaleScalarFieldEnum)[keyof typeof SaleScalarFieldEnum]
 
 
 export const LeadEventScalarFieldEnum = {

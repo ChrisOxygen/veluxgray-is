@@ -28,6 +28,11 @@ export type Product = Prisma.ProductModel
  */
 export type Lead = Prisma.LeadModel
 /**
+ * Model Sale
+ * 
+ */
+export type Sale = Prisma.SaleModel
+/**
  * Model LeadEvent
  * 
  */

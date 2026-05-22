@@ -45,8 +45,21 @@ model Lead {
   product      Product       @relation(fields: [productId], references: [id])
   events       LeadEvent[]
   whatsappLogs WhatsappLog[]
+  sale         Sale?
 
   @@map("leads")
+}
+
+model Sale {
+  id          String   @id @default(uuid())
+  leadId      String   @unique
+  dispatchFee Decimal  @db.Decimal(10, 2) @default(10000)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lead        Lead     @relation(fields: [leadId], references: [id])
+
+  @@map("sales")
 }
 
 model LeadEvent {
