@@ -45,8 +45,6 @@ export async function POST(request: Request) {
   const parsed = ZCreateProductSchema.safeParse(body);
   if (!parsed.success) return apiValidationError(parsed.error);
 
-  console.log("[POST /api/v1/products] data:", JSON.stringify(parsed.data, null, 2));
-
   try {
     const product = await _createProduct(parsed.data);
     return NextResponse.json(product, { status: 201 });
