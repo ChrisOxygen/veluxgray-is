@@ -45,13 +45,19 @@ export async function POST(request: Request) {
   const parsed = ZCreateProductSchema.safeParse(body);
   if (!parsed.success) return apiValidationError(parsed.error);
 
+  console.log("[POST /api/v1/products] data:", JSON.stringify(parsed.data, null, 2));
+
   try {
     const product = await _createProduct(parsed.data);
     return NextResponse.json(product, { status: 201 });
   } catch (err) {
-    console.error("[POST /api/v1/products]", err);
-    if (err && typeof err === "object" && "code" in err && err.code === "P2002") {
-      return apiError("bad_request", "A product with this SKU already exists", 400);
+    console.error("[POST /api/v1/products] error:", err);
+    if (err && typeof err === "object" && "code" in err) {
+      if (err.code === "P2002") {
+        return apiError("bad_request", "A product with this SKU already exists", 400);
+      }
+      const message = "message" in err && typeof err.message === "string" ? err.message : "Database error";
+      return apiError("internal_error", message, 500);
     }
     return apiError("internal_error", "Internal server error", 500);
   }
