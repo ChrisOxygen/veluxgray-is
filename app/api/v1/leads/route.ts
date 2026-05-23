@@ -15,9 +15,11 @@ export async function GET(request: Request) {
   const status = searchParams.get("status") ?? undefined;
   const productId = searchParams.get("productId") ?? undefined;
   const q = searchParams.get("q") ?? undefined;
+  const limit = Math.min(Number(searchParams.get("limit") ?? 100), 200);
+  const page = Math.max(Number(searchParams.get("page") ?? 1), 1);
 
   try {
-    const result = await _getLeads({ status, productId, q });
+    const result = await _getLeads({ status, productId, q, limit, page });
     return NextResponse.json(result);
   } catch {
     return apiError("internal_error", "Internal server error", 500);

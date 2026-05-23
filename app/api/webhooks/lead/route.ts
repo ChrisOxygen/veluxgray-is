@@ -41,7 +41,12 @@ export async function POST(request: Request) {
   const headers = corsHeaders(request);
 
   // 1. Validate
-  const body = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return apiError("bad_request", "Invalid JSON body", 400, headers);
+  }
   const parsed = ZLeadWebhookPayload.safeParse(body);
   if (!parsed.success) return apiValidationError(parsed.error, headers);
 
@@ -68,10 +73,15 @@ export async function POST(request: Request) {
   // 4. Respond immediately, then hand off to background task
   const taskPayload: OnNewLeadPayload = { ...parsed.data, productId: product.id };
   after(async () => {
-    await tasks.trigger<typeof import("@/trigger/on-new-lead").onNewLead>(
-      "on-new-lead",
-      taskPayload,
-    );
+    try {
+      await tasks.trigger<typeof import("@/trigger/on-new-lead").onNewLead>(
+        "on-new-lead",
+        taskPayload,
+        { idempotencyKey: `${parsed.data.mainPhone}-${parsed.data.sku}` },
+      );
+    } catch (err) {
+      console.error("[webhook] Failed to enqueue on-new-lead task:", err);
+    }
   });
 
   return NextResponse.json(

@@ -41,15 +41,5 @@ export function useSignIn() {
     setIsPending(false);
   });
 
-  const signInWithGoogle = async () => {
-    const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-  };
-
-  return { form, onSubmit, isPending, error, signInWithGoogle };
+  return { form, onSubmit, isPending, error };
 }

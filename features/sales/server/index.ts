@@ -43,10 +43,19 @@ export async function _createSale(data: ZCreateSale) {
       data: { status: "CONVERTED" },
     });
 
-    await tx.product.update({
-      where: { id: product.id },
+    // Atomic check-and-decrement: only proceeds if sufficient stock still exists,
+    // preventing a race where two concurrent conversions both pass the pre-check.
+    const updated = await tx.product.updateMany({
+      where: { id: product.id, inventoryCount: { gte: lead.quantity } },
       data: { inventoryCount: { decrement: lead.quantity } },
     });
+
+    if (updated.count === 0) {
+      throw new SaleError(
+        "INSUFFICIENT_STOCK",
+        `Only ${product.inventoryCount} units in stock`,
+      );
+    }
 
     await tx.leadEvent.create({
       data: {

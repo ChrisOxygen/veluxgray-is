@@ -1,8 +1,15 @@
 import { prisma } from "@/shared/lib/prisma";
 
 export async function _getDashboardStats() {
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
+  // Derive today's midnight in Africa/Lagos (WAT = UTC+1) so "leads today"
+  // resets at Lagos midnight rather than UTC midnight (which is 1am Lagos time).
+  const lagosDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Lagos",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  const todayStart = new Date(`${lagosDate}T00:00:00+01:00`);
 
   const [
     leadsToday,

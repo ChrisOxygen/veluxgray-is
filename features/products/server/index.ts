@@ -6,9 +6,11 @@ import type { ProductsStats } from "@/features/products/types";
 interface GetProductsParams {
   q?: string;
   status?: "active" | "archived" | "all";
+  limit?: number;
+  page?: number;
 }
 
-export async function _getProducts({ q, status = "all" }: GetProductsParams = {}) {
+export async function _getProducts({ q, status = "all", limit = 100, page = 1 }: GetProductsParams = {}) {
   const where: Prisma.ProductWhereInput = {};
 
   if (status === "active") where.isActive = true;
@@ -21,8 +23,10 @@ export async function _getProducts({ q, status = "all" }: GetProductsParams = {}
     ];
   }
 
+  const skip = (page - 1) * limit;
+
   const [products, allProducts] = await Promise.all([
-    prisma.product.findMany({ where, orderBy: { createdAt: "desc" } }),
+    prisma.product.findMany({ where, orderBy: { createdAt: "desc" }, take: limit, skip }),
     prisma.product.findMany({
       select: { isActive: true, inventoryCount: true, lowStockThreshold: true },
     }),

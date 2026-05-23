@@ -117,22 +117,27 @@ export const onNewLead = task({
       (lead.deliveryAddress ? `*Delivery Address:* ${lead.deliveryAddress}\n` : "") +
       `━━━━━━━━━━━━━━━━━━`;
 
-    try {
-      await getWasender().sendText({
-        to: toE164(process.env.WASENDERAPI_OWNER_PHONE!),
-        text: ownerAlert,
-      });
-      await prisma.whatsappLog.create({
-        data: {
-          leadId: lead.id,
-          direction: "outbound",
-          recipient: process.env.WASENDERAPI_OWNER_PHONE!,
-          message: ownerAlert,
-          status: "sent",
-        },
-      });
-    } catch (err) {
-      logger.error("Failed to send owner alert", { err });
+    const ownerPhone = process.env.WASENDERAPI_OWNER_PHONE;
+    if (!ownerPhone) {
+      logger.error("WASENDERAPI_OWNER_PHONE is not set — owner alert skipped");
+    } else {
+      try {
+        await getWasender().sendText({
+          to: toE164(ownerPhone),
+          text: ownerAlert,
+        });
+        await prisma.whatsappLog.create({
+          data: {
+            leadId: lead.id,
+            direction: "outbound",
+            recipient: ownerPhone,
+            message: ownerAlert,
+            status: "sent",
+          },
+        });
+      } catch (err) {
+        logger.error("Failed to send owner alert", { err });
+      }
     }
 
     logger.info("on-new-lead complete", { leadId: lead.id, isOnWhatsApp });

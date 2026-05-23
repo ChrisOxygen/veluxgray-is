@@ -48,7 +48,12 @@ export async function PATCH(
   if (error || !user) return apiError("unauthorized", "Unauthorized", 401);
 
   const { id } = await params;
-  const body = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return apiError("bad_request", "Invalid JSON body", 400);
+  }
   const parsed = ZPatchLeadSchema.safeParse(body);
   if (!parsed.success) return apiValidationError(parsed.error);
 

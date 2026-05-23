@@ -4,7 +4,9 @@ let _wasender: ReturnType<typeof createWasender> | null = null;
 
 export function getWasender() {
   if (!_wasender) {
-    _wasender = createWasender(process.env.WASENDERAPI_TOKEN!);
+    const token = process.env.WASENDERAPI_TOKEN;
+    if (!token) throw new Error("WASENDERAPI_TOKEN env var is not set");
+    _wasender = createWasender(token);
   }
   return _wasender;
 }
