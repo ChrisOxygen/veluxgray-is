@@ -48,7 +48,11 @@ export async function POST(request: Request) {
   try {
     const product = await _createProduct(parsed.data);
     return NextResponse.json(product, { status: 201 });
-  } catch {
+  } catch (err) {
+    console.error("[POST /api/v1/products]", err);
+    if (err && typeof err === "object" && "code" in err && err.code === "P2002") {
+      return apiError("bad_request", "A product with this SKU already exists", 400);
+    }
     return apiError("internal_error", "Internal server error", 500);
   }
 }
