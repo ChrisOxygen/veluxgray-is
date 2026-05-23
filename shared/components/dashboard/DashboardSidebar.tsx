@@ -24,6 +24,7 @@ export interface DashboardSidebarProps {
 
 export function DashboardSidebar({ user, onClose }: DashboardSidebarProps) {
   const pathname = usePathname();
+
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 
@@ -58,13 +59,15 @@ export function DashboardSidebar({ user, onClose }: DashboardSidebarProps) {
         Menu
       </p>
 
-      {/* Nav */}
+      {/* Primary nav */}
       <div className="flex-1">
         <NavMain items={navItems} onClose={onClose} />
       </div>
 
       {/* User */}
-      <NavUser user={user} />
+      <div className="border-t border-primary-hover pt-3 mt-3">
+        <NavUser user={user} />
+      </div>
     </div>
   );
 }
